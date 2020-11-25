@@ -29,4 +29,10 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setMenuItems(menuItems);
         return restaurant;
     }
+
+    @Override
+    public Restaurant addRestaurant(Restaurant restaurant) {
+        Restaurant saved = restaurantRepository.save(restaurant);
+        return restaurant;
+    }
 }

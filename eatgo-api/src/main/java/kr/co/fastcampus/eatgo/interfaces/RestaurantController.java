@@ -1,15 +1,13 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import kr.co.fastcampus.eatgo.application.RestaurantService;
-import kr.co.fastcampus.eatgo.domain.MenuItem;
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
-import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -17,7 +15,6 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
-    private final RestaurantRepository restaurantRepository;
 
     @GetMapping("/restaurants")
     public List<Restaurant> list() {
@@ -26,8 +23,14 @@ public class RestaurantController {
 
     @GetMapping("/restaurants/{id}")
     public Restaurant list(@PathVariable("id") Long id) {
-        Restaurant restaurant = restaurantService.getRestaurant(id);
-        return restaurant;
+        return restaurantService.getRestaurant(id);
+    }
+
+    @PostMapping("/restaurants")
+    public ResponseEntity<?> create(@RequestBody Restaurant restaurant) throws URISyntaxException {
+        restaurantService.addRestaurant(restaurant);
+        URI location = new URI("/restaurants/" + restaurant.getId());
+        return ResponseEntity.created(location).body("{}");
     }
 
 
