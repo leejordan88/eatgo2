@@ -8,4 +8,5 @@ public interface RestaurantService {
     List<Restaurant> findAll();
     Restaurant getRestaurant(Long id);
     Restaurant addRestaurant(Restaurant restaurant);
+    Restaurant updateRestaurant(Long id, String name, String address);
 }

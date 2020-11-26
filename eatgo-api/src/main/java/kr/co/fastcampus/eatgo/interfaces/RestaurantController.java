@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -27,10 +28,16 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity<?> create(@RequestBody Restaurant restaurant) throws URISyntaxException {
+    public ResponseEntity<?> create(@RequestBody @Valid Restaurant restaurant) throws URISyntaxException {
         restaurantService.addRestaurant(restaurant);
-        URI location = new URI("/restaurants/" + restaurant.getId());
+        URI location = new URI("/restaurants");
         return ResponseEntity.created(location).body("{}");
+    }
+
+    @PatchMapping("/restaurants/{id}")
+    public String update(@PathVariable("id") Long id, @RequestBody Restaurant restaurant) {
+        restaurantService.updateRestaurant(id, restaurant.getName(), restaurant.getAddress());
+        return "{}";
     }
 
 
